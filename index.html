@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/RPS GAME/scissors.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        .font-times {
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        h1 {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .moves-table td:first-child {
+            text-align: center;
+            padding-right: 100px;
+            margin-right: 100px;
+        }
+        
+        .moves-table td:last-child {
+            text-align: center;
+            padding-left: 100px;
+            margin-left: 100px;
+        }
+
+        .fs-1 {
+            padding-top: 10px;
+            padding-bottom: 40px;
+        }
+
+        img {
+            height: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light mt-0">
+    <div class="container d-flex justify-content-center align-items-center mt-0" style="height: 100vh;">
+        <div class="text-light font-times text-center">
+            <h1>Rock Paper Scissors</h1>
+            <div class="border border-warning col-5" style="height: 600px; width: 600px; margin:auto">
+                <div class="border border-warning d-flex justify-content-center align-items-center">
+                    <table class="fs-3 m-2 moves-table">
+                        <thead>
+                            <tr>
+                                <td>You</td>
+                                <td>Computer</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="playerScore" class="text-center">0</td>
+                                <td id="computerScore" class="text-center">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container">
+                    <img src="/RPS GAME/giphy.gif" alt="rps gif"></img>
+                    <img src="/RPS GAME/giphy1.gif" alt="rps gif"></img>
+                </div>
+                <div class="container fs-1">
+                    <span id="resultMessage">Choose Your Move</span>
+                </div>
+                <div class="container d-flex justify-content-center">
+                    <button id="rockButton" class="btn btns btn-lg btn-primary mx-3 fs-4">Rock</button>
+                    <button id="paperButton" class="btn btns btn-lg btn-primary mx-3 fs-4">Paper</button>
+                    <button id="scissorsButton" class="btn btns btn-lg btn-primary mx-3 fs-4">Scissors</button>
+                </div>
+                <div class="container d-flex justify-content-center mt-4" id="restartContainer">
+                    <button id="restartButton" class="btn btn-danger fs-5 mt-3">Restart Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const moves = ['rock', 'paper', 'scissors'];
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameOver = false;
+        
+        const rockButton = document.getElementById('rockButton');
+        const paperButton = document.getElementById('paperButton');
+        const scissorsButton = document.getElementById('scissorsButton');
+        const restartButton = document.getElementById('restartButton');
+        const playerScoreElement = document.getElementById('playerScore');
+        const computerScoreElement = document.getElementById('computerScore');
+        const resultMessage = document.getElementById('resultMessage');
+        const restartContainer = document.getElementById('restartContainer');
+
+        function computerPlay() {
+            const randomIndex = Math.floor(Math.random() * moves.length);
+            return moves[randomIndex];
+        }
+        
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection === computerSelection) {
+                return 'It\'s a tie!';
+            } else if (
+                (playerSelection === 'rock' && computerSelection === 'scissors') ||
+                (playerSelection === 'paper' && computerSelection === 'rock') ||
+                (playerSelection === 'scissors' && computerSelection === 'paper')
+            ) {
+                playerScore++;
+                if (playerScore === 3) {
+                    endGame('Player');
+                }
+                return 'You win!';
+            } else {
+                computerScore++;
+                if (computerScore === 3) {
+                    endGame('Computer');
+                }
+                return 'You lose!';
+            }
+        }
+        
+        function displayResult(result) {
+            resultMessage.textContent = result;
+            playerScoreElement.textContent = playerScore;
+            computerScoreElement.textContent = computerScore;
+        }
+        
+        function restartGame() {
+            playerScore = 0;
+            computerScore = 0;
+            gameOver = false;
+            resultMessage.textContent = 'Choose Your Move';
+            playerScoreElement.textContent = playerScore;
+            computerScoreElement.textContent = computerScore;
+            restartContainer.style.display = 'none';
+            rockButton.style.display = 'inline-block';
+            paperButton.style.display = 'inline-block';
+            scissorsButton.style.display = 'inline-block';
+        }
+
+        function endGame(winner) {
+            gameOver = true;
+            resultMessage.textContent = `Game Over - ${winner} Wins!`;
+            restartContainer.style.display = 'flex';
+            rockButton.style.display = 'none';
+            paperButton.style.display = 'none';
+            scissorsButton.style.display = 'none';
+        }
+        
+        rockButton.addEventListener('click', function() {
+            if (!gameOver) {
+                const playerSelection = 'rock';
+                const computerSelection = computerPlay();
+                const result = playRound(playerSelection, computerSelection);
+                displayResult(result);
+            }
+        });
+
+        paperButton.addEventListener('click', function() {
+            if (!gameOver) {
+                const playerSelection = 'paper';
+                const computerSelection = computerPlay();
+                const result = playRound(playerSelection, computerSelection);
+                displayResult(result);
+            }
+        });
+
+        scissorsButton.addEventListener('click', function() {
+            if (!gameOver) {
+                const playerSelection = 'scissors';
+                const computerSelection = computerPlay();
+                const result = playRound(playerSelection, computerSelection);
+                displayResult(result);
+            }
+        });
+        
+        restartButton.addEventListener('click', restartGame);
+    </script>
+</body>
+</html>
