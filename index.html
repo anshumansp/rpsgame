@@ -110,13 +110,13 @@
                 (playerSelection === 'scissors' && computerSelection === 'paper')
             ) {
                 playerScore++;
-                if (playerScore === 3) {
+                if (playerScore === 5) {
                     endGame('Player');
                 }
                 return 'You win!';
             } else {
                 computerScore++;
-                if (computerScore === 3) {
+                if (computerScore === 5) {
                     endGame('Computer');
                 }
                 return 'You lose!';
